@@ -104,4 +104,50 @@ public class StudentService {
         Long studentCount = studentRepository.findAll().stream().count();
         return (double) studentAgeSum / studentCount;
     }
+
+    public void getStudentNameByThread() {
+        List<Student> studentList = studentRepository.findAll();
+        printStudentName(studentList.get(0));
+        printStudentName(studentList.get(1));
+
+        new Thread(() -> {
+            printStudentName(studentList.get(2));
+            printStudentName(studentList.get(3));
+        }
+        ).start();
+
+        new Thread(() -> {
+            printStudentName(studentList.get(4));
+            printStudentName(studentList.get(5));
+        }
+        ).start();
+    }
+
+    public void getStudentNameBySyncThread() {
+        List<Student> studentList = studentRepository.findAll();
+        printStudentNameSync(studentList.get(0));
+        printStudentNameSync(studentList.get(1));
+
+        new Thread(() -> {
+            printStudentNameSync(studentList.get(2));
+            printStudentNameSync(studentList.get(3));
+        }
+        ).start();
+
+        new Thread(() -> {
+            printStudentNameSync(studentList.get(4));
+            printStudentNameSync(studentList.get(5));
+        }
+        ).start();
+    }
+
+    private void printStudentName(Student student) {
+        System.out.println(Thread.currentThread() + " " + student.getName());
+    }
+
+    private void printStudentNameSync(Student student) {
+        synchronized (this) {
+            System.out.println(Thread.currentThread() + " " + student.getName());
+        }
+    }
 }

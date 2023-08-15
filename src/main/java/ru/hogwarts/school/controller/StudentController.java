@@ -104,4 +104,15 @@ public class StudentController {
         return studentService.getStudentAverageAge();
     }
 
+    @GetMapping("name-by-thread")
+    public void getStudentNameByThread() {
+        studentService.getStudentNameByThread();
+    }
+
+    @GetMapping("name-by-thread-sync")
+    public void getStudentNameByThreadSync() {
+        studentService.getStudentNameBySyncThread();
+    }
+
+
 }
